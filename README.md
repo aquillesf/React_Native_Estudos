@@ -12,6 +12,7 @@ Todas as aplicações deste repositório foram desenvolvidas utilizando as segui
 
 Aplicativo simples desenvolvido para uma cafeteria fictícia. (Primeiro Projeto que fiz com as ferramentas).
 
+
 **Funcionalidades:**
 - Exibição do cardápio com itens e preços.
 - Informações de contato e localização do estabelecimento.
@@ -19,6 +20,7 @@ Aplicativo simples desenvolvido para uma cafeteria fictícia. (Primeiro Projeto 
 ### ✅ To Do List (CRUD)
 
 Aplicativo clássico de lista de tarefas, focado em praticar conceitos de estado, renderização condicional e manipulação de listas.
+
 
 **Funcionalidades:**
 - Adicionar tarefas.
