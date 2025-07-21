@@ -17,6 +17,8 @@ Aplicativo simples desenvolvido para uma cafeteria fictícia. (Primeiro Projeto 
 - Exibição do cardápio com itens e preços.
 - Informações de contato e localização do estabelecimento.
 
+  
+
 ### ✅ To Do List (CRUD)
 
 Aplicativo clássico de lista de tarefas, focado em praticar conceitos de estado, renderização condicional e manipulação de listas.
