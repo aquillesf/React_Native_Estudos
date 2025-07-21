@@ -17,7 +17,7 @@ Aplicativo simples desenvolvido para uma cafeteria fictícia. (Primeiro Projeto 
 - Exibição do cardápio com itens e preços.
 - Informações de contato e localização do estabelecimento.
 
-  
+--
 
 ### ✅ To Do List (CRUD)
 
