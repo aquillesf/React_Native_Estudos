@@ -6,8 +6,6 @@ Todas as aplicações deste repositório foram desenvolvidas utilizando as segui
 - [React Native](https://reactnative.dev/)
 - [Expo CLI](https://docs.expo.dev/)
 
----
-
 ## 🚀 Projetos Desenvolvidos
 
 ### ☕ Cardápio Café
@@ -19,8 +17,6 @@ Aplicativo simples desenvolvido para uma cafeteria fictícia.
 - Informações de contato e localização do estabelecimento.
 - Layout responsivo com foco em usabilidade.
 
----
-
 ### ✅ To Do List (CRUD)
 
 Aplicativo clássico de lista de tarefas, focado em praticar conceitos de estado, renderização condicional e manipulação de listas.
@@ -29,7 +25,6 @@ Aplicativo clássico de lista de tarefas, focado em praticar conceitos de estado
 - Adicionar tarefas.
 - Deletar tarefas finalizadas.
 - Validação de campos e feedback visual.
----
 
 ## 🛠️ Como Rodar os Projetos
 
