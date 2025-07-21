@@ -1,0 +1,47 @@
+{
+  "expo": {
+    "name": "meuapp",
+    "slug": "meuapp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/cafe_coracao.jpg",
+    "scheme": "meuapp",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/cafe_bonito.jpg",
+      "resizeMode": "cover",
+      "backgroundColor": "#000000"
+    },
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
