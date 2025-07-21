@@ -26,9 +26,3 @@ Aplicativo clássico de lista de tarefas, focado em praticar conceitos de estado
 - Deletar tarefas finalizadas.
 - Validação de campos e feedback visual.
 
-## 🛠️ Como Rodar os Projetos
-
-1. Instale as dependências:
-
-```bash
-npm install
