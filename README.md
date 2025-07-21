@@ -10,12 +10,11 @@ Todas as aplicações deste repositório foram desenvolvidas utilizando as segui
 
 ### ☕ Cardápio Café
 
-Aplicativo simples desenvolvido para uma cafeteria fictícia.
+Aplicativo simples desenvolvido para uma cafeteria fictícia. (Primeiro Projeto que fiz com as ferramentas).
 
 **Funcionalidades:**
 - Exibição do cardápio com itens e preços.
 - Informações de contato e localização do estabelecimento.
-- Layout responsivo com foco em usabilidade.
 
 ### ✅ To Do List (CRUD)
 
