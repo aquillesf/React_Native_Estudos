@@ -18,7 +18,7 @@ Aplicativo simples desenvolvido para uma cafeteria fictícia. (Primeiro Projeto 
 ##
 ### ✅ To Do List (CRUD)
 
-Aplicativo clássico de lista de tarefas, focado em praticar conceitos de estado, renderização condicional e manipulação de listas.
+Aplicativo clássico de lista de tarefas, focado em praticar conceitos de estado, renderização condicional e manipulação de listas. (Um CRUD básico pra aprender manipulação de arrays, rotas dinâmicas e etc...).
 
 **Funcionalidades:**
 - Adicionar tarefas.
