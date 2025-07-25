@@ -1,6 +1,4 @@
 import 'react-native-get-random-values'; 
-import { polyfillWebCrypto } from 'expo-standard-web-crypto';
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Alert} from 'react-native';
 import MapView, { LatLng, Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -9,13 +7,9 @@ import Constants from 'expo-constants';
 import React, { useState, useRef } from 'react';
 import 'react-native-url-polyfill/auto';
 import MapViewDirections from 'react-native-maps-directions';
-import { Image } from 'react-native';
 import { useEffect } from 'react';
 import * as Location from 'expo-location';
 
-
-
-//pega tamanho da tela do celular
 const { width, height } = Dimensions.get("window");
 
 //calculos pra pegar certinho os pontos geograficos dos lugares
@@ -29,7 +23,6 @@ const INITIAL_POSITION = {
   longitudeDelta: LONGITUDE_DELTA,
 };
 
-//tipando parametros da API do google
 type InputAutocompleteProps = {
   label: string;
   placeholder?: string;
@@ -61,7 +54,7 @@ function InputAutocomplete({
         placeholder={placeholder || "Search for a place..."}
         fetchDetails={true}
         onPress={(data, details = null) => {
-        onPlaceSelected(details);
+          onPlaceSelected(details);
         }}
         query={{
           key: GOOGLE_API_KEY,
@@ -72,12 +65,7 @@ function InputAutocomplete({
   );
 }
 
-
-//aqui é basicamente onde fica o mapa, de forma bem simplória
-// eu setei logo abaixo as variaveis de distancia. direções, rotas, o mapa e tal
-
 export default function App() {
-
 
   //localizações
   const [currentLocation, setCurrentLocation] = useState<LatLng | null>(null);
@@ -87,12 +75,12 @@ export default function App() {
   const [destination, setDestination] = useState<LatLng | null>();
   //rotas
   const [showDirections, setShowDirections] = useState(false)
-  const [distance, setDistance] = useState(0);
-  const [duration, setDuration] = useState(0);
+  //const [distance, setDistance] = useState(0);
+  //const [duration, setDuration] = useState(0);
   //mapa
   const mapRef = useRef<MapView>(null)
 
-
+  //aqui é pra pegar a localização do usuário quando o app inicia
   useEffect(() => {
   (async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -136,6 +124,7 @@ export default function App() {
   };
 }, []);
 
+  //aqui é onde a camera do mapa se move para a localização que o usuário selecionou
   const moveTo = async (position: LatLng) => {
     const camera = await mapRef.current?.getCamera();
     if (camera) {
@@ -144,55 +133,41 @@ export default function App() {
     }
   };
 
-  const edgePaddingValue = 70;
-
-  const edgePadding = {
-    top: edgePaddingValue,
-    right: edgePaddingValue,
-    bottom: edgePaddingValue,
-    left: edgePaddingValue,
-  };
-
   //aqui traça as rotas
-
-  const traceRouteOnReady = (args: any) => {
-    if (args) {
+  //const traceRouteOnReady = (args: any) => {
+    //if (args) {
       // args.distance
       // args.duration
-      setDistance(args.distance);
-      setDuration(args.duration);
-    }
-  };
+      //setDistance(args.distance);
+      //setDuration(args.duration);
+    //}
+  //};
 
   const traceRoute = () => {
     if (origin && destination) {
       setShowDirections(true);
-      mapRef.current?.fitToCoordinates([origin, destination], { edgePadding });
+      mapRef.current?.fitToCoordinates([origin, destination]);
     }
   };
 
-//aqui é onde nos setamos (puxamos) o lugar que o usuario quer
-
-const isUserSelectingCurrentLocation = (details: GooglePlaceDetail) => {
-  if (!currentLocation || !details) return false;
-  
-  const latDiff = Math.abs(details.geometry.location.lat - currentLocation.latitude);
-  const lngDiff = Math.abs(details.geometry.location.lng - currentLocation.longitude);
-  
-  return latDiff < 0.0001 && lngDiff < 0.0001; 
-};
-
+  // Verifica se a localização atual é a mesma que a selecionada
+  const isUserSelectingCurrentLocation = (details: GooglePlaceDetail) => {
+    if (!currentLocation || !details) return false;
+    const latDiff = Math.abs(details.geometry.location.lat - currentLocation.latitude);
+    const lngDiff = Math.abs(details.geometry.location.lng - currentLocation.longitude);  
+    return latDiff < 0.0001 && lngDiff < 0.0001; 
+  };
 
 const onPlaceSelected = (
-  details: GooglePlaceDetail | null, 
-  flag: "origin" | "destination"
-) => {
-  if (!details) return;
+    details: GooglePlaceDetail | null, 
+    flag: "origin" | "destination"
+  ) => {
+    if (!details) return;
 
-  const position = {
-    latitude: details.geometry.location.lat,
-    longitude: details.geometry.location.lng,
-  };
+    const position = {
+      latitude: details.geometry.location.lat,
+      longitude: details.geometry.location.lng,
+    };
 
   const set = flag === "origin" ? setOrigin : setDestination;
   set(position);
@@ -205,7 +180,6 @@ const onPlaceSelected = (
 
   //esse return é onde cai o front depois que o usuario seleciona as coisas e as funções calculam
   //aqui é basicamente o front do mapa
-
   return (
     <View style={styles.container}>
       <MapView 
@@ -214,22 +188,30 @@ const onPlaceSelected = (
         provider={PROVIDER_GOOGLE} 
         initialRegion={INITIAL_POSITION}
         showsUserLocation={true}
-        followsUserLocation={showDirections} // só segue quando tem rota
+        followsUserLocation={showDirections}
         showsCompass={true}
       >
         {origin && <Marker coordinate={origin} />}
         {destination && <Marker coordinate={destination} />}
         {showDirections && origin && destination && 
           <MapViewDirections origin={origin} destination={destination} apikey={GOOGLE_API_KEY} 
-            strokeColor="#6644ff" strokeWidth={4} onReady={traceRouteOnReady}
+            strokeColor="#6644ff" strokeWidth={4} //onReady={traceRouteOnReady}
           />}
+
+        <Marker
+          coordinate={{latitude: -27.4946, longitude:-48.656}}
+          title="Marker Example"
+          pinColor="#00cc00"
+        />
       </MapView>
-      
       <View style={styles.searchContainer}>
         <InputAutocomplete label="Origin" onPlaceSelected={(details) => {onPlaceSelected(details, "origin")}}/>
         <InputAutocomplete label="Destination" onPlaceSelected={(details) => {onPlaceSelected(details, "destination")}}/>
         <TouchableOpacity style ={styles.button} onPress={traceRoute}>
           <Text style ={styles.buttonText}>Trace Route</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style ={styles.button} onPress={() => setShowDirections(false)}>
+          <Text style ={styles.buttonText}>Remove Directions</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -237,7 +219,6 @@ const onPlaceSelected = (
 }
 
 // css
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
