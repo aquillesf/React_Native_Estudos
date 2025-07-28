@@ -82,47 +82,47 @@ export default function App() {
 
   //aqui é pra pegar a localização do usuário quando o app inicia
   useEffect(() => {
-  (async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert('Permissão negada', 'Não foi possível acessar sua localização');
-      return;
-    }
-
-    let location = await Location.getCurrentPositionAsync({});
-    const userLocation = {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-    };
-    
-    setCurrentLocation(userLocation); 
-    moveTo(userLocation);
-    
-    const subscription = await Location.watchPositionAsync(
-      {
-        accuracy: Location.Accuracy.High,
-        timeInterval: 1000,
-        distanceInterval: 2,
-      },
-      (newLocation) => {
-        const updatedLocation = {
-          latitude: newLocation.coords.latitude,
-          longitude: newLocation.coords.longitude,
-        };
-        setCurrentLocation(updatedLocation);
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permissão negada', 'Não foi possível acessar sua localização');
+        return;
       }
-    );
-    
-    setLocationSubscription(subscription);
-    
-  })();
 
-  return () => {
-    if (locationSubscription) {
-      locationSubscription.remove();
-    }
-  };
-}, []);
+      let location = await Location.getCurrentPositionAsync({});
+      const userLocation = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      
+      setCurrentLocation(userLocation); 
+      moveTo(userLocation);
+      
+      const subscription = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.High,
+          timeInterval: 1000,
+          distanceInterval: 2,
+        },
+        (newLocation) => {
+          const updatedLocation = {
+            latitude: newLocation.coords.latitude,
+            longitude: newLocation.coords.longitude,
+          };
+          setCurrentLocation(updatedLocation);
+        }
+      );
+      
+      setLocationSubscription(subscription);
+      
+    })();
+
+    return () => {
+      if (locationSubscription) {
+        locationSubscription.remove();
+      }
+    };
+  }, []);
 
   //aqui é onde a camera do mapa se move para a localização que o usuário selecionou
   const moveTo = async (position: LatLng) => {
@@ -136,10 +136,10 @@ export default function App() {
   //aqui traça as rotas
   //const traceRouteOnReady = (args: any) => {
     //if (args) {
-      // args.distance
-      // args.duration
-      //setDistance(args.distance);
-      //setDuration(args.duration);
+      //args.distance
+       //args.duration
+       //setDistance(args.distance);
+       //setDuration(args.duration);
     //}
   //};
 
@@ -147,6 +147,28 @@ export default function App() {
     if (origin && destination) {
       setShowDirections(true);
       mapRef.current?.fitToCoordinates([origin, destination]);
+    }
+
+    else if (!origin && destination && currentLocation) {
+      setOrigin(currentLocation);
+      setShowDirections(true);
+      mapRef.current?.fitToCoordinates([currentLocation, destination]);
+    }
+
+    else {
+    Alert.alert(
+      'Rota incompleta', 
+      'Por favor, selecione pelo menos um destino ou certifique-se de que sua localização atual está disponível.'
+    );
+  }};
+
+  const traceRouteFromUserLocationToMarker = () => {
+    if (currentLocation) {
+      const markerPosition = {latitude: -27.4946, longitude: -48.656};
+      setOrigin(currentLocation);
+      setDestination(markerPosition);
+      setShowDirections(true);
+      mapRef.current?.fitToCoordinates([currentLocation, markerPosition]);
     }
   };
 
@@ -158,25 +180,25 @@ export default function App() {
     return latDiff < 0.0001 && lngDiff < 0.0001; 
   };
 
-const onPlaceSelected = (
-    details: GooglePlaceDetail | null, 
-    flag: "origin" | "destination"
-  ) => {
-    if (!details) return;
+  const onPlaceSelected = (
+      details: GooglePlaceDetail | null, 
+      flag: "origin" | "destination"
+    ) => {
+      if (!details) return;
 
-    const position = {
-      latitude: details.geometry.location.lat,
-      longitude: details.geometry.location.lng,
-    };
+      const position = {
+        latitude: details.geometry.location.lat,
+        longitude: details.geometry.location.lng,
+      };
 
-  const set = flag === "origin" ? setOrigin : setDestination;
-  set(position);
-  moveTo(position);
+    const set = flag === "origin" ? setOrigin : setDestination;
+    set(position);
+    moveTo(position);
 
-  if (flag === "origin" && isUserSelectingCurrentLocation(details)) {
-    setOrigin(position); 
-  }
-};
+    if (flag === "origin" && isUserSelectingCurrentLocation(details)) {
+      setOrigin(position); 
+    }
+  };
 
   //esse return é onde cai o front depois que o usuario seleciona as coisas e as funções calculam
   //aqui é basicamente o front do mapa
@@ -202,6 +224,7 @@ const onPlaceSelected = (
           coordinate={{latitude: -27.4946, longitude:-48.656}}
           title="Marker Example"
           pinColor="#00cc00"
+          onPress={() => traceRouteFromUserLocationToMarker()}
         />
       </MapView>
       <View style={styles.searchContainer}>
@@ -210,13 +233,13 @@ const onPlaceSelected = (
         <TouchableOpacity style ={styles.button} onPress={traceRoute}>
           <Text style ={styles.buttonText}>Trace Route</Text>
         </TouchableOpacity>
-        <TouchableOpacity style ={styles.button} onPress={() => setShowDirections(false)}>
+        <TouchableOpacity style ={styles.button} onPress={() => {setShowDirections(false); setOrigin(null); setDestination(null);}}>
           <Text style ={styles.buttonText}>Remove Directions</Text>
         </TouchableOpacity>
       </View>
     </View>
-  );
-}
+  )
+};
 
 // css
 const styles = StyleSheet.create({
@@ -263,4 +286,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-});
+})
+
+
